@@ -32,9 +32,12 @@ set_target_properties(update_mappings PROPERTIES FOLDER "GLFW3")
 if (GLFW_BUILD_COCOA)
     enable_language(OBJC)
     target_compile_definitions(glfw PRIVATE _GLFW_COCOA)
-    target_sources(glfw PRIVATE cocoa_platform.h cocoa_joystick.h cocoa_init.m
-                                cocoa_joystick.m cocoa_monitor.m cocoa_window.m
-                                nsgl_context.m)
+
+    set(GLFM_COCOA_SOURCES cocoa_init.m cocoa_joystick.m cocoa_monitor.m cocoa_window.m nsgl_context.m)
+    target_sources(glfw PRIVATE cocoa_platform.h cocoa_joystick.h ${GLFM_COCOA_SOURCES})
+
+    # Note: This fixes Xcode compilation errors.
+    set_source_files_properties(${GLFM_COCOA_SOURCES} PROPERTIES LANGUAGE OBJC)
 endif()
 
 if (GLFW_BUILD_WIN32)
